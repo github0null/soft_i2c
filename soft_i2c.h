@@ -16,7 +16,7 @@
 
 //--------- interface define --------
 
-#include "soft_i2c_conf.h"
+#include <soft_i2c_conf.h>
 
 #if !defined(I2C_SCL_HIGH) || !defined(I2C_SCL_LOW)
 #error "Macro 'I2C_SCL_HIGH()' and 'I2C_SCL_LOW()' must be implemented !"
@@ -30,19 +30,27 @@
 #error "Macro 'I2C_SDA_Read()' must be implemented !"
 #endif
 
+//------------------------
+
+#ifdef I2C_USE_FAST_MODE
+
 #if !defined(I2C_Delay500ns)
 #error "Macro 'I2C_Delay500ns()' must be implemented !"
 #endif
 
-//------------------------
-
-#ifdef I2C_USE_FAST_MODE
 #define HalfPulseTime() I2C_Delay500ns() // 0.5 us
 #else
-#define HalfPulseTime() I2C_Delay500ns(), I2C_Delay500ns(), I2C_Delay500ns(), I2C_Delay500ns(), I2C_Delay500ns() // 2.5 us
+
+#if !defined(I2C_Delay2_5us)
+#error "Macro 'I2C_Delay2_5us()' must be implemented !"
 #endif
 
-#define PulseTime() HalfPulseTime(), HalfPulseTime()
+#define HalfPulseTime() I2C_Delay2_5us() // 2.5 us
+#endif
+
+#define PulseTime()  \
+    HalfPulseTime(); \
+    HalfPulseTime()
 
 //------------------------
 
