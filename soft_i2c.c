@@ -1,24 +1,41 @@
 #include "soft_i2c.h"
 
-#define I2C_Init() I2C_SDA_HIGH(), I2C_SCL_HIGH()
-
-void I2C_Start(void)
+I2C_RESULT I2C_Start(void)
 {
-    I2C_Init();
-    HalfPulseTime();
-    I2C_SDA_LOW();
-    HalfPulseTime();
-    I2C_SCL_LOW();
-    HalfPulseTime();
+    I2C_RESULT status;
+
+    I2C_SDA_HIGH();
+    I2C_SCL_HIGH();
+
+    status = (I2C_SCL_Read()) ? I2C_OK : I2C_BUSY;
+    if (status == I2C_OK)
+    {
+        HalfPulseTime();
+        I2C_SDA_LOW();
+        HalfPulseTime();
+        I2C_SCL_LOW();
+        HalfPulseTime();
+    }
+
+    return status;
 }
 
-void I2C_Stop(void)
+I2C_RESULT I2C_Stop(void)
 {
-    I2C_SDA_LOW();
+    I2C_RESULT status;
+
     I2C_SCL_HIGH();
-    HalfPulseTime();
-    I2C_SDA_HIGH();
-    HalfPulseTime();
+
+    status = (I2C_SCL_Read()) ? I2C_OK : I2C_BUSY;
+    if (status == I2C_OK)
+    {
+        I2C_SDA_LOW();
+        HalfPulseTime();
+        I2C_SDA_HIGH();
+        HalfPulseTime();
+    }
+
+    return status;
 }
 
 I2C_ACK I2C_Send7BitAddr(uint8_t addr, I2C_Direction direction)
