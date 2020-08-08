@@ -6,11 +6,11 @@ I2C_RESULT I2C_Start(void)
 
     I2C_SDA_HIGH();
     I2C_SCL_HIGH();
+    HalfPulseTime();
 
     status = (I2C_SCL_Read()) ? I2C_OK : I2C_BUSY;
     if (status == I2C_OK)
     {
-        HalfPulseTime();
         I2C_SDA_LOW();
         HalfPulseTime();
         I2C_SCL_LOW();
@@ -25,6 +25,7 @@ I2C_RESULT I2C_Stop(void)
     I2C_RESULT status;
 
     I2C_SCL_HIGH();
+    HalfPulseTime();
 
     status = (I2C_SCL_Read()) ? I2C_OK : I2C_BUSY;
     if (status == I2C_OK)
