@@ -40,20 +40,24 @@ I2C_ACK I2C_SendByte(uint8_t dat)
         {
             I2C_SDA_LOW();
         }
+
         dat <<= 1;
-        HalfPulseTime();
+
         I2C_SCL_HIGH();
         PulseTime();
         I2C_SCL_LOW();
         PulseTime();
     }
 
-    // get ACK
+    // free SDA pin and wait
     I2C_SDA_HIGH();
     HalfPulseTime();
+
+    // get ACK
     I2C_SCL_HIGH();
-    PulseTime();
+    HalfPulseTime();
     i = I2C_SDA_Read();
+    HalfPulseTime();
     I2C_SCL_LOW();
     PulseTime();
 
@@ -66,14 +70,15 @@ uint8_t I2C_ReceiveByte(void)
 
     // set input mode
     I2C_SDA_HIGH();
-    PulseTime();
+    HalfPulseTime();
 
     for (i = 0; i < 8; i++)
     {
         I2C_SCL_HIGH();
-        PulseTime();
+        HalfPulseTime();
         dat <<= 1;
         dat |= I2C_SDA_Read();
+        HalfPulseTime();
         I2C_SCL_LOW();
         PulseTime();
     }

@@ -48,9 +48,7 @@
 #define HalfPulseTime() I2C_Delay2_5us() // 2.5 us
 #endif
 
-#define PulseTime()  \
-    HalfPulseTime(); \
-    HalfPulseTime()
+#define PulseTime()  HalfPulseTime(), HalfPulseTime()
 
 //------------------------
 
