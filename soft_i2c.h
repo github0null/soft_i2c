@@ -3,7 +3,7 @@
  * 
  * Soft I2C Bus Interface; 
  * 
- * Speed: 100kbps, pulse time 5us
+ * Speed: 100kbps, one pulse time: 5us
  * Duty cycles: 50%
  * Addr mode: 7bit
  * Have ack: yes
